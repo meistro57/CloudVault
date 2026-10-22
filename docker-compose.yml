@@ -1,0 +1,14 @@
+services:
+  cloudvault:
+    build: .
+    read_only: true
+    volumes:
+      - ${CLOUDVAULT_SOURCE:?set_source}:/source:ro
+      - ./state:/state
+      - ${RCLONE_CONFIG_PATH:?set_rclone_config}:/etc/rclone/rclone.conf:ro
+    environment:
+      CLOUDVAULT_SOURCE: /source
+      CLOUDVAULT_DB: /state/cloudvault.sqlite3
+      RCLONE_CONFIG: /etc/rclone/rclone.conf
+      CLOUDVAULT_REMOTE: ${CLOUDVAULT_REMOTE:?set_remote}
+    command: ["status"]
